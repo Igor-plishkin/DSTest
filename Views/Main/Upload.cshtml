@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Upload Page";
+}
+<div>
+    @using (Html.BeginForm("UploadFile", "Main", FormMethod.Post, new { enctype = "multipart/form-data", @class = "d-flex flex-column gap-3 col-md-3" }))
+    {
+        <p class="m-0">Здесь вы можете загрузить один или несколько файлов excel!</p>
+        <input type="file" name="files" multiple/>
+        <input class="btn btn-primary" type="submit" class="btn" value="Загрузить" />
+        @if (ViewBag.UploadError != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">Ошибка!</h4>
+                <p class="mb-0">@ViewBag.UploadError</p>
+            </div>
+        }
+        @if (ViewBag.UploadSucces != null)
+        {
+            <div class="alert alert-success" role="alert">
+                <p class="mb-0">Файлы успешно загружены!</p>
+            </div>
+        }
+    }
+</div>

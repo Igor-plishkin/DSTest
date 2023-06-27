@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Measures Page";
+}
+@model DSTest.Models.MeasurePageViewModel;
+
+<h2>Список измерений</h2>
+
+<form method="get" class="mb-4">
+    <div class="d-flex gap-3 align-items-end">
+        <div class="flex-column gap-1">
+            <label class="mb-1">Год: </label>
+            <select class="form-select" name="Year" asp-items="Model.FilterViewModel.Years"></select>
+        </div>
+        <div class="flex-column">
+            <label class="mb-1">Месяц: </label>
+            <select class="form-select" name="Month" asp-items="Model.FilterViewModel.Months"></select>
+        </div>
+
+        <input class="btn btn-primary" type="submit" value="Фильтр" />
+    </div>
+</form>
+@if (Model.Measures.Count() > 0)
+{
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="align-middle">
+                <tr>
+                    <th scope="col">Дата</th>
+                    <th scope="col">Время московское</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="bottom" title="Температура воздуха, гр. Ц">T</th>
+                    <th scope="col">Отн. влажность воздуха, %</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="bottom" title="Точка росы, гр. Ц">Td</th>
+                    <th scope="col">Атм. давление, мм рт.ст.</th>
+                    <th scope="col">Направление ветра</th>
+                    <th scope="col">Скорость ветра, м/с</th>
+                    <th scope="col">Облачность, %</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="bottom" title="Нижняя граница облачности">h</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="bottom" title="Горизонтальная видимость">VV</th>
+                    <th scope="col">Погодные явления</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (WeatherMeasure measure in Model.Measures)
+                {
+                    <tr>
+                        <td>@measure.Date</td>
+                        <td>@measure.MoscowTime</td>
+                        <td>@measure.Temperature</td>
+                        <td>@measure.AirHumidity</td>
+                        <td>@measure.DewPoint</td>
+                        <td>@measure.Pressure</td>
+                        <td>@measure.WindDirection</td>
+                        <td>@measure.WindSpeed</td>
+                        <td>@measure.Cloudiness</td>
+                        <td>@measure.LowCloudiness</td>
+                        <td>@measure.HorizontalVisibility</td>
+                        <td>@measure.WeatherConditions</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <page-link page-model="Model.PaginationViewModel"
+               page-action="Measures"
+               page-url-year="@(Model.FilterViewModel.SelectedYear)"
+               page-url-month="@(Model.FilterViewModel.SelectedMonth)"></page-link>
+}
+else{
+    <h3>Измерений не найдено</h3>
+}
